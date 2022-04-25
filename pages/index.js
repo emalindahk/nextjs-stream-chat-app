@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { StreamChat } from 'stream-chat'
 import { ChannelList, Chat } from 'stream-chat-react'
-import Cookies from 'universal-cookie/es6'
+import Cookies from 'universal-cookie'
 
 import { ChannelListContainer, ChannelContainer } from '../components'
 
