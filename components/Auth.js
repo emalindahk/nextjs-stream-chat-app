@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
+import {useRouter} from 'next/router';
 
 import axios from "axios";
+
+const cookies = new Cookies();
 
 const initialState = {
     username: "",
@@ -13,8 +16,9 @@ const initialState = {
 }
 
 const Auth = () => {
-    const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState(initialState);
   const [isSignUp, setIsSignUp] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e) => {
     setForm({
@@ -23,10 +27,27 @@ const Auth = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
-    console.log(form);
+    const { username, fullName, password, phoneNumber, avatarURL } = form;
+    const URL = "http://localhost:5000/auth"
 
+    const {data : {token, userId, hashedPassword }} = await axios.post(`${URL}/${isSignUp ? "signup" : "login"}`, {
+      username, fullName, password, phoneNumber, avatarURL}
+      ); 
+
+    cookies.set("token", token);
+    cookies.set("username", username);
+    cookies.set("userId", userId);
+    cookies.set("fullName", fullName);
+
+    if(isSignUp){
+        cookies.set("phoneNumber", phoneNumber);
+        cookies.set("avatarURL", avatarURL);
+        cookies.set("hashedPassword", hashedPassword);
+    }
+
+    router.reload();
   }
 
   const switchMode = () => {
