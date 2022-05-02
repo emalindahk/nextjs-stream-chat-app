@@ -47,7 +47,7 @@ if(authToken) {
         <meta name="description" content="NextJS Chat App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Chat client={client} theme="team dark">
+      <Chat client={client} theme="team light">
         <ChannelListContainer
         isCreating={isCreating}
         setIsCreating={setIsCreating}

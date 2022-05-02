@@ -55,14 +55,6 @@ const ChannelListContainer = () => {
         <ChannelList
           filters={{}}
           channelRenderFilterFn={() => {}}
-          List={(listProps) => <GroupChannelList {...listProps} type="team" />}
-          Preview={(previewProps) => (
-            <GroupChannelPreview {...previewProps} type="team" />
-          )}
-        />
-        <ChannelList
-          filters={{}}
-          channelRenderFilterFn={() => {}}
           List={(listProps) => (
             <GroupChannelList {...listProps} type="messaging" />
           )}
@@ -70,6 +62,16 @@ const ChannelListContainer = () => {
             <GroupChannelPreview {...previewProps} type="messaging" />
           )}
         />
+        
+        <ChannelList
+          filters={{}}
+          channelRenderFilterFn={() => {}}
+          List={(listProps) => <GroupChannelList {...listProps} type="team" />}
+          Preview={(previewProps) => (
+            <GroupChannelPreview {...previewProps} type="team" />
+          )}
+        />
+       
       </div>
     </>
   );

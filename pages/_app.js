@@ -1,4 +1,6 @@
 import '../styles/globals.css'
+import '../styles/GroupMessage.css';
+
 
 
 function MyApp({ Component, pageProps }) {
