@@ -1,26 +1,57 @@
 import React, {useState, useEffect} from 'react'
 import { useChatContext } from 'stream-chat-react'
+import { ResultsDropdown } from '.'
 import { SearchIcon } from '../public/assets/SearchIcon'
 
 
-const ChannelSearch = () => {
+const ChannelSearch = ({setToggleContainer}) => {
     const [query, setQuery] = useState('')
     const [loading, setLoading] = useState(false)
+    const {client, setActiveClient} = useChatContext()
+    const [groupChannels, setGroupChannels] = useState([])
+    const [directChannels, setDirectChannels] = useState([])
+
+    useEffect(() => {
+        if(!query){
+            setGroupChannels([])
+            setDirectChannels([])
+        }
+    }, [query])
 
     const getChannels = async (text) => {
         try {
-            //  TODO: fetch channels from API
+           const channelRes = client.queryChannels({
+               type: 'team',
+               name: { $autocomplete: text},
+               members: { $in : [client.userID]}
+           })
+
+           const userRes = client.queryUsers({
+               id: { $ne : client.userID},
+               name: { $autocomplete: text}
+           })
+
+           const [channels, {users}] = await Promise.all([channelRes, userRes])
+
+           if(channels.length) setGroupChannels(channels);
+           if(users.length) setDirectChannels(users);
+
         } catch (error) {
             setQuery('')
         }
     }
 
     const onSearch = (e) => {
-        e.prevendDefault()
+        e.preventDefault()
 
         setLoading(true)
         setQuery(e.target.value)
         getChannels(e.target.value)
+    }
+
+    const setChannel = (channel) => {
+        setQuery('')
+        setActiveClient(channel)
     }
 
   return (
@@ -36,6 +67,16 @@ const ChannelSearch = () => {
             onChange={onSearch}
             />
         </div>
+        {query && (
+            <ResultsDropdown
+            groupChannels={groupChannels}
+            directChannels={directChannels}
+            loading={loading}
+            setChannel={setChannel}
+            setQuery={setQuery}
+            setToggleContainer={setToggleContainer}
+            />
+        )}
     </div>
   )
 }
