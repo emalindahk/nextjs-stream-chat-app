@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start && nodemon ./pages/api/server.js",
     "lint": "next lint",
     "server": "nodemon ./pages/api/server.js"
   },
