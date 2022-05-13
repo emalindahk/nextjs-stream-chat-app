@@ -1,6 +1,9 @@
 import React from "react";
 
-const GroupChannelList = ({ children, error = false, loading, type }) => {
+import { AddChannel }from "../public/assets/AddChannel"
+
+const GroupChannelList = ({ children, error = false, loading, type , isCreating, setIsCreating, setIsEditing, setCreateType, setToggleContainer }) => {
+
   if (error) {
     return type === "team" ? (
       <div className="team-channel-list">
@@ -15,20 +18,29 @@ const GroupChannelList = ({ children, error = false, loading, type }) => {
     return (
       <div className="team-channel-list">
       <p className="team-channel-list__message loading">
-       {type === "team" ? "Channels" : "Messages"} loading ...
+       {type === "team" ? "Groups" : "Direct Messages"} loading ...
       </p>
     </div>
     )
   }
-  return  <div className="team-channel-list">
+  
+  return  (
+  <div className="team-channel-list">
   <div className="team-channel-list__header">
     <p className="team-channel-list__header__title">
-    {type === "team" ? "Channels" : "Direct Messages"}
+    {type === "team" ? "Groups" : "Direct Messages"}
     </p>
-    {/* Button to add channels */}
+
+    <AddChannel
+    isCreating={isCreating}
+    setIsCreating={setIsCreating}
+    setIsEditing={setIsEditing}
+    setCreateType={setCreateType}
+    type={type === 'team' ? 'team' : 'messaging'}
+    setToggleContainer={setToggleContainer}/>
   </div>
   {children}
-</div>;
+</div>)
 };
 
 export default GroupChannelList;

@@ -11,6 +11,7 @@ const ChannelContainer = ({
   createType,
 }) => {
   const {channel} = useChatContext();
+  
   if (isCreating) {
     return (
       <div className="channel__container">
